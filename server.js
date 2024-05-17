@@ -1,6 +1,7 @@
 const express = require("express"); 
 const bodyParser = require("body-parser"); 
-const cors = require("cors"); 
+const cors = require("cors");
+const mongoose = require("mongoose");  
 
 require("dotenv").config(); 
 let port = process.env.PORT || 3001;
@@ -9,6 +10,14 @@ let port = process.env.PORT || 3001;
 const app = express(); 
 app.use(bodyParser.json());
 app.use(cors()); 
+
+//Anlut till databas 
+mongoose.set("strictQuery", false); 
+mongoose.connect(process.env.DATABASE).then(() => {
+    console.log("Ansluten till MongoDB");
+}).catch((error) => {
+    console.error("Något gick fel med anslutningen"); 
+}); 
 
 //Routing FULL CURD
 app.get("/api", (req,res)=>{

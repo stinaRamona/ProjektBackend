@@ -50,7 +50,7 @@ app.get("/api", (req,res)=>{
 //hämta in menylaternativ
 app.get("/api/menu", (req, res) => {
     try{
-        result= MenuItem.find({}) // Visar alla menyalternativ
+        let result = MenuItem.find({}) // Ska visa alla menyalternativ, men hittar inte. Får inte heller något error.
 
         return res.json(result); 
 

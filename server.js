@@ -64,7 +64,7 @@ app.get("/api/menu", async (req, res) => {
 }); 
 
 //lägg till nya menyalternativ
-app.post("/api/menu", async (req, res)=> {
+app.post("/api/menu", authenticateToken, async (req, res)=> {
     try {
         let result = await MenuItem.create(req.body); 
 
@@ -77,7 +77,7 @@ app.post("/api/menu", async (req, res)=> {
 }); 
 
 //uppdatera menyalternativ genom _id
-app.put("/api/menu", async (req, res)=> {
+app.put("/api/menu", authenticateToken, async (req, res)=> {
     try{
         let id = req.body._id;
 
@@ -91,7 +91,7 @@ app.put("/api/menu", async (req, res)=> {
 })
 
 //ta bort menyalternativ genom _id
-app.delete("/api/menu", async (req, res) => {
+app.delete("/api/menu", authenticateToken, async (req, res) => {
     try{
         let id = req.body._id; 
 
@@ -104,6 +104,11 @@ app.delete("/api/menu", async (req, res) => {
         return res.status(500).json(error); 
     }
 }); 
+
+//middleware för att kontrollera JWT 
+function authenticateToken(req, res, next){
+    //kod för validering av token. 
+}
 
 //Startar servern på angiven port
 app.listen(port, ()=>{

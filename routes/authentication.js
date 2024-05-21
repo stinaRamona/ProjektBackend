@@ -50,7 +50,14 @@ router.post("/login", async (req, res)=> {
         if(!isPasswordMatch){
             return res.status(401).json({Error: "Fel användarnamn eller lösenord"});
         } else {
-            res.json({message: "Du loggas in"}); 
+            //skapa JWT
+            const payload = {username: username}; 
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '8h'}); 
+            const response = {
+                message: "Du loggas in", 
+                token: token
+            }
+            res.json({response}); 
         }
 
     } catch(error) {

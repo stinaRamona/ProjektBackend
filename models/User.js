@@ -79,5 +79,5 @@ userShcema.methods.login = async function(username, password) {
     }
 }
 
-const User = mongoose.module("User", userShcema); 
+const User = mongoose.model("User", userShcema); 
 module.exports = User; 

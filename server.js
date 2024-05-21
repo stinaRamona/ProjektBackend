@@ -9,7 +9,7 @@ let port = process.env.PORT || 3001;
 //Initiering av app
 const app = express(); 
 app.use(bodyParser.json());
-app.use(cors()); 
+app.use(cors());  
 
 //Anlut till databas 
 mongoose.set("strictQuery", false); 
@@ -17,7 +17,11 @@ mongoose.connect(process.env.DATABASE).then(() => {
     console.log("Ansluten till MongoDB");
 }).catch((error) => {
     console.error("Något gick fel med anslutningen"); 
-}); 
+});
+
+//importera routes 
+const authentication = require('./routes/authentication'); 
+app.use("/api/auth", authentication); 
 
 //skapa scehma för meny
 const menuSchema = new mongoose.Schema({
@@ -50,7 +54,7 @@ app.get("/api", (req,res)=>{
 //hämta in menylaternativ
 app.get("/api/menu", async (req, res) => {
     try{
-        let result = await MenuItem.find({}) // Ska visa alla menyalternativ, men hittar inte. Får inte heller något error.
+        let result = await MenuItem.find({})
 
         return res.json(result); 
 

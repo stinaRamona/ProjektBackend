@@ -1,7 +1,8 @@
 const express = require("express"); 
 const bodyParser = require("body-parser"); 
 const cors = require("cors");
-const mongoose = require("mongoose");  
+const mongoose = require("mongoose"); 
+const jwt = require("jsonwebtoken");  
 
 require("dotenv").config(); 
 let port = process.env.PORT || 3001;
@@ -107,7 +108,23 @@ app.delete("/api/menu", authenticateToken, async (req, res) => {
 
 //middleware för att kontrollera JWT 
 function authenticateToken(req, res, next){
-    //kod för validering av token. 
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; 
+
+    if(token == null){
+        res.status(401).json({message: "Du har inte tillgång till denna sida. Token saknas."}); 
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
+        if(err){
+            return res.status(403).json({message: "Ogiltigt token!"}); 
+        }
+
+        console.log("Token verified. Username:", username);
+        req.username = username; //kan behöva lägga till .username för att det ska fungera
+        next();
+    })
+
 }
 
 //Startar servern på angiven port

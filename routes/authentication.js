@@ -11,6 +11,8 @@ require("dotenv").config();
 mongoose.set("strictQuery", false); 
 mongoose.connect(process.env.DATABASE); 
 
+const User = require("./User"); 
+
 //Route för login för att komma åt routen för att uppdatera, lägga till och ta bort menyalternativ
 router.post("/login", async (req, res)=> {
     try {
@@ -19,7 +21,7 @@ router.post("/login", async (req, res)=> {
         if(!username || !password) {
             res.status(401).json({message: "Både användarnamn och lösenord måste anges"}); 
         }
-        
+
     } catch {
 
     }

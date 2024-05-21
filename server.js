@@ -48,9 +48,9 @@ app.get("/api", (req,res)=>{
 }); 
 
 //hämta in menylaternativ
-app.get("/api/menu", (req, res) => {
+app.get("/api/menu", async (req, res) => {
     try{
-        let result = MenuItem.find({}) // Ska visa alla menyalternativ, men hittar inte. Får inte heller något error.
+        let result = await MenuItem.find({}) // Ska visa alla menyalternativ, men hittar inte. Får inte heller något error.
 
         return res.json(result); 
 
@@ -60,9 +60,9 @@ app.get("/api/menu", (req, res) => {
 }); 
 
 //lägg till nya menyalternativ
-app.post("/api/menu", (req, res)=> {
+app.post("/api/menu", async (req, res)=> {
     try {
-        let result = MenuItem.create(req.body); 
+        let result = await MenuItem.create(req.body); 
 
         return res.json("Ny rätt tillagd" + result)
 
@@ -72,14 +72,33 @@ app.post("/api/menu", (req, res)=> {
     }
 }); 
 
-//uppdatera menyalternativ
-app.put("/api/menu", (req, res)=> {
-    res.json({message: "Uppdaterar menyn(ska vara skyddad!)"}); 
+//uppdatera menyalternativ genom _id
+app.put("/api/menu", async (req, res)=> {
+    try{
+        let id = req.body._id;
+
+        let result = await MenuItem.updateOne({_id: id}, {$set: req.body}); 
+
+        return res.json(result); 
+
+    } catch(error){
+        return res.status(500).json(error); 
+    }
 })
 
-//ta bort menyalternativ
-app.delete("/api/menu", (req, res) => {
-    res.json({message: "Tar bort sak från menyn(ska vara skyddad!)"});
+//ta bort menyalternativ genom _id
+app.delete("/api/menu", async (req, res) => {
+    try{
+        let id = req.body._id; 
+
+        let result = await MenuItem.deleteOne({_id: id}); //tar bort med ID
+
+        return res.json(result); 
+
+    } catch(error) {
+
+        return res.status(500).json(error); 
+    }
 }); 
 
 //Startar servern på angiven port

@@ -78,7 +78,7 @@ app.post("/api/menu", authenticateToken, async (req, res)=> {
 }); 
 
 //uppdatera menyalternativ genom _id
-app.put("/api/menu", authenticateToken, async (req, res)=> {
+app.put("/api/menu:_id", authenticateToken, async (req, res)=> {
     try{
         let id = req.body._id;
 
@@ -92,7 +92,7 @@ app.put("/api/menu", authenticateToken, async (req, res)=> {
 })
 
 //ta bort menyalternativ genom _id
-app.delete("/api/menu", authenticateToken, async (req, res) => {
+app.delete("/api/menu:_id", authenticateToken, async (req, res) => {
     try{
         let id = req.body._id; 
 

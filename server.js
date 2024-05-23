@@ -80,7 +80,7 @@ app.post("/api/menu", authenticateToken, async (req, res)=> {
 //uppdatera menyalternativ genom _id
 app.put("/api/menu:_id", authenticateToken, async (req, res)=> {
     try{
-        let id = req.body._id;
+        let id = req.params._id;
 
         let result = await MenuItem.updateOne({_id: id}, {$set: req.body}); 
 
@@ -94,7 +94,7 @@ app.put("/api/menu:_id", authenticateToken, async (req, res)=> {
 //ta bort menyalternativ genom _id
 app.delete("/api/menu:_id", authenticateToken, async (req, res) => {
     try{
-        let id = req.body._id; 
+        let id = req.params._id; 
 
         let result = await MenuItem.deleteOne({_id: id}); //tar bort med ID
 
